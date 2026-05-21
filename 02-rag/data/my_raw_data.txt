@@ -1,0 +1,10 @@
+# 여기에 자신의 raw 데이터(텍스트)를 붙여넣으세요.
+# 형식 자유. 길수록 chunking 효과가 잘 보입니다.
+# 이후 실행:
+#   python 1_clean.py --source my
+#   python 2_chunk.py
+#   python 3_embed.py
+#   python 4_index.py --collection persona_my
+#   ./chat.sh --data my
+
+(여기에 자신의 텍스트를 붙여넣으세요)

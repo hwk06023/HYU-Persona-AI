@@ -1,0 +1,9 @@
+.env
+.DS_Store
+.venv/
+__pycache__/
+*.pyc
+01-prompt/my-prompt.txt
+02-rag/outputs/
+02-rag/qdrant_data/
+03-memory/qdrant_data/
