@@ -112,3 +112,7 @@ cd ../03-memory      # 02-rag 안에 있다면
 - **`my-prompt.txt not found`** → 먼저 `01-prompt/generate_persona.py` 실행
 - **`Qdrant 데이터가 없습니다`** → 먼저 `02-rag/4_index.py` 실행
 - **한글 깨짐** → 파일 인코딩 UTF-8 확인
+- **`pip: command not found` / `No module named pip`** → `pip` 대신 아래 중 하나로 재시도
+  - 평소 `python`으로 실행하는 분: `python -m pip install -r requirements.txt`
+  - 평소 `python3`로 실행하는 분: `python3 -m pip install -r requirements.txt`
+  - 각 스텝의 `python ...` 명령도 동일하게 본인 환경의 `python` 또는 `python3` 로 바꿔서 실행하세요.
