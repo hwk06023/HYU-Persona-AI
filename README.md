@@ -54,7 +54,10 @@ python generate_persona.py
 | Chat | `./chat.sh` | (CLI 입력) | (CLI 출력 + retrieved chunks 표시) |
 
 ```bash
-cd 02-rag
+cd 02-rag            # 루트에서 시작했다면
+# 또는
+cd ../02-rag         # 01-prompt 안에 있다면
+
 python 1_clean.py --source raw
 python 2_chunk.py
 python 3_embed.py
@@ -79,7 +82,10 @@ python 4_index.py --collection persona_my
 02와 동일한 RAG 위에 직전 6턴 대화를 system prompt에 자동 주입 (FIFO, 6턴 초과분은 버림). Qdrant 인덱스는 02 것을 그대로 재사용합니다.
 
 ```bash
-cd 03-memory
+cd 03-memory         # 루트에서 시작했다면
+# 또는
+cd ../03-memory      # 02-rag 안에 있다면
+
 ./chat.sh                          # 본인 페르소나 + 예시 데이터 + 6턴 메모리
 ./chat.sh --persona example
 ./chat.sh --data my
