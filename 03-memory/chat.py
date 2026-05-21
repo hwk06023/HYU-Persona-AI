@@ -148,10 +148,19 @@ def main():
 
             chunks = search(client_qd, openai_client, collection, user_input, args.top_k)
             if not args.hide_chunks:
-                print(f"\n[retrieved {len(chunks)} chunks  |  memory {len(turns)}/{MAX_TURNS} turns]")
+                print(f"\n[retrieved {len(chunks)} chunks]")
                 for i, c in enumerate(chunks):
                     preview = c["text"].replace("\n", " ")[:120]
                     print(f"  ({i+1}) score={c['score']:.3f}  {preview}...")
+
+                print(f"\n[memory {len(turns)}/{MAX_TURNS} turns]")
+                if not turns:
+                    print("  (비어 있음)")
+                else:
+                    for i, (u, a) in enumerate(turns, start=1):
+                        print(f"  --- turn {i} ---")
+                        print(f"    User      : {u[:200]}")
+                        print(f"    Assistant : {a[:200].replace(chr(10), ' ')}")
                 print()
 
             recent = format_turns(turns)
