@@ -116,3 +116,4 @@ cd ../03-memory      # 02-rag 안에 있다면
   - 평소 `python`으로 실행하는 분: `python -m pip install -r requirements.txt`
   - 평소 `python3`로 실행하는 분: `python3 -m pip install -r requirements.txt`
   - 각 스텝의 `python ...` 명령도 동일하게 본인 환경의 `python` 또는 `python3` 로 바꿔서 실행하세요.
+- **`Storage folder ... is already accessed by another instance of Qdrant client`** → 로컬 Qdrant는 한 번에 한 프로세스만 접근 가능합니다. 다른 터미널에서 `02-rag/chat.py` 또는 `03-memory/chat.py`가 실행 중인지 확인하고 종료한 뒤 다시 실행하세요.

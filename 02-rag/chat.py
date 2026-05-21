@@ -98,7 +98,17 @@ def main():
             f"먼저 `python 4_index.py --collection {collection}`을 실행하세요."
         )
 
-    client_qd = QdrantClient(path=str(DB_DIR))
+    try:
+        client_qd = QdrantClient(path=str(DB_DIR))
+    except RuntimeError as e:
+        if "already accessed" in str(e):
+            raise SystemExit(
+                f"Qdrant 디렉터리가 다른 프로세스에 의해 잠겨 있습니다: {DB_DIR}\n"
+                f"다른 터미널에서 02-rag/chat.py 또는 03-memory/chat.py가 실행 중인지 확인하고 종료하세요.\n"
+                f"(로컬 Qdrant는 한 번에 한 프로세스만 접근 가능)"
+            )
+        raise
+
     openai_client = OpenAI(api_key=api_key)
 
     if not client_qd.collection_exists(collection):
@@ -112,29 +122,32 @@ def main():
     print("종료: exit / quit / Ctrl+D")
     print(DIVIDER)
 
-    while True:
-        try:
-            user_input = input("You> ").strip()
-        except (EOFError, KeyboardInterrupt):
-            print()
-            break
-        if not user_input:
-            continue
-        if user_input.lower() in {"exit", "quit", ":q"}:
-            break
+    try:
+        while True:
+            try:
+                user_input = input("You> ").strip()
+            except (EOFError, KeyboardInterrupt):
+                print()
+                break
+            if not user_input:
+                continue
+            if user_input.lower() in {"exit", "quit", ":q"}:
+                break
 
-        chunks = search(client_qd, openai_client, collection, user_input, args.top_k)
-        if not args.hide_chunks:
-            print(f"\n[retrieved {len(chunks)} chunks]")
-            for i, c in enumerate(chunks):
-                preview = c["text"].replace("\n", " ")[:120]
-                print(f"  ({i+1}) score={c['score']:.3f}  {preview}...")
-            print()
+            chunks = search(client_qd, openai_client, collection, user_input, args.top_k)
+            if not args.hide_chunks:
+                print(f"\n[retrieved {len(chunks)} chunks]")
+                for i, c in enumerate(chunks):
+                    preview = c["text"].replace("\n", " ")[:120]
+                    print(f"  ({i+1}) score={c['score']:.3f}  {preview}...")
+                print()
 
-        system = render(persona, chunks, recent_turns="", user_input=user_input)
-        reply = chat_once(openai_client, system, user_input)
-        print(f"Assistant> {reply}")
-        print(DIVIDER)
+            system = render(persona, chunks, recent_turns="", user_input=user_input)
+            reply = chat_once(openai_client, system, user_input)
+            print(f"Assistant> {reply}")
+            print(DIVIDER)
+    finally:
+        client_qd.close()
 
 
 if __name__ == "__main__":
